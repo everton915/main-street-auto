@@ -31,6 +31,13 @@ class App extends Component {
   getVehicles() {
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get(`https://joes-autos.herokuapp.com/api/vehicles`)
+    .then(res => {
+      toast.success('Got your cars!')
+      this.setState({
+        vehiclesToDisplay: res.data
+      })
+    }).catch( () => toast.error('Daggum! I didn\'t git ur vehicles!'))
   }
 
   getPotentialBuyers() {
@@ -41,6 +48,13 @@ class App extends Component {
   sellCar(id) {
     // axios (DELETE)
     // setState with response -> vehiclesToDisplay
+    axios.delete(`https://joes-autos.herokuapp.com/api/vehicles/${id}`)
+    .then( res => {
+      this.setState({
+        vehiclesToDisplay: res.data.vehicles
+      })
+      toast.success("You just sold your car guy!")
+    }).catch(() => toast.error('Sorry, nobody wants your car!'))
   }
 
   filterByMake() {
@@ -60,6 +74,13 @@ class App extends Component {
   updatePrice(priceChange, id) {
     // axios (PUT)
     // setState with response -> vehiclesToDisplay
+     axios.put(`https://joes-autos.herokuapp.com/api/vehicles/${id}/${priceChange}`)
+     .then( res => {
+       this.setState({
+         vehiclesToDisplay: res.data.vehicles
+       })
+       toast.success("Your car costs more now!")
+     }).catch(() => toast.error("Failed to update price!"))
   }
 
   addCar() {
@@ -73,7 +94,14 @@ class App extends Component {
 
     // axios (POST)
     // setState with response -> vehiclesToDisplay
-  }
+    axios.post(`https://joes-autos.herokuapp.com/api/vehicles`, newCar)
+    .then ( res => {
+      this.setState({
+        vehiclesToDisplay: res.data.vehicles
+    })
+    toast.success('Added your car for sale!')
+  }).catch(() => toast.error('Sorry, this car is not for sale!'))
+}
 
   addBuyer() {
     let newBuyer = {
